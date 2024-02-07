@@ -3,13 +3,13 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
+trigger:
+- master
+
 schedules:
 - cron: "30 19 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
   displayName: Daily 7:30 PM build 
   
-trigger:
-- master
-
 pool:
   vmImage: ubuntu-latest
 
