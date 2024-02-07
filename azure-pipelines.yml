@@ -20,8 +20,8 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    # Run your one-line script and save the result to a variable
-    result=$(your_one_line_script_here)
+   
+    result=$(echo Hello, world! zainul abid)
 
     # Echo the result to the console
     echo "Script Result: $result"
