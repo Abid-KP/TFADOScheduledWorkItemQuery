@@ -5,7 +5,7 @@
 
 
 schedules:
-- cron: "41 20 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
+- cron: "44 20 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
   displayName: Daily 7:30 PM build 
   branches:
    include:
@@ -26,7 +26,7 @@ steps:
    $organization = "afiqdes"
    $project = "QC%20and%20Design"
    $queryId = "6bb8e42f-40fe-456e-ac0d-9044b4cc79bb"
-   $url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId?api-version=6.0"
+   $url = "https://dev.azure.com/afiqdes/QC%20and%20Design/_queries/query/6bb8e42f-40fe-456e-ac0d-9044b4cc79bb/"
    $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
     foreach ($workItem in $response.workItems) 
     {
