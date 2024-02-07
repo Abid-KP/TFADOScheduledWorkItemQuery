@@ -5,7 +5,7 @@
 
 
 schedules:
-- cron: "05 20 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
+- cron: "0518 20 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
   displayName: Daily 7:30 PM build 
   branches:
    include:
@@ -21,15 +21,25 @@ steps:
 
 - script: |
    
-    result=$(echo Hello, world! zainul abid)
+$pat = "xdcarlp4j6ln2tnhvxneo4f3l7e4xv7eps3rkzgov7j2twtdeuxa"
+$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$($pat)"))
 
-    # Echo the result to the console
-    echo "Script Result: $result"
+ # Define the Azure DevOps organization and project
+$organization = "afiqdes"
+$project = "QC%20and%20Design"
 
-    # Send an email with the script result
-    echo "Sending email..."
-    echo "Script Result: $result" | mail -s "Script Result" zainul.abid@afiinfotech.com
-  displayName: 'Run a one-line script and send email'
+ # Define the ID of the work item query
+$queryId = "6bb8e42f-40fe-456e-ac0d-9044b4cc79bb"
+
+ # Define the Azure DevOps REST API URL
+$url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId?api-version=6.0"
+
+ # Invoke the REST API to execute the query and retrieve results
+$response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
+
+ # Process the results (e.g., print work item titles)
+foreach ($workItem in $response.workItems) {
+    Write-Output $workItem.fields.'System.Title'
   
 
 - script: |
