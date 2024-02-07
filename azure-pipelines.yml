@@ -20,6 +20,19 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
+    # Run your one-line script and save the result to a variable
+    result=$(your_one_line_script_here)
+
+    # Echo the result to the console
+    echo "Script Result: $result"
+
+    # Send an email with the script result
+    echo "Sending email..."
+    echo "Script Result: $result" | mail -s "Script Result" zainul.abid@afiinfotech.com
+  displayName: 'Run a one-line script and send email'
+  
+
+- script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
   displayName: 'Run a multi-line script'
