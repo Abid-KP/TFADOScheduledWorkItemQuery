@@ -5,7 +5,7 @@
 
 
 schedules:
-- cron: "0518 20 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
+- cron: "41 20 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
   displayName: Daily 7:30 PM build 
   branches:
    include:
@@ -19,30 +19,16 @@ steps:
 - script: echo Hello, world! zainul abid
   displayName: 'Run a one-line script'
 
-- script: |
-   
-$pat = "xdcarlp4j6ln2tnhvxneo4f3l7e4xv7eps3rkzgov7j2twtdeuxa"
-$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$($pat)"))
-
- # Define the Azure DevOps organization and project
-$organization = "afiqdes"
-$project = "QC%20and%20Design"
-
- # Define the ID of the work item query
-$queryId = "6bb8e42f-40fe-456e-ac0d-9044b4cc79bb"
-
- # Define the Azure DevOps REST API URL
-$url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId?api-version=6.0"
-
- # Invoke the REST API to execute the query and retrieve results
-$response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
-
- # Process the results (e.g., print work item titles)
-foreach ($workItem in $response.workItems) {
-    Write-Output $workItem.fields.'System.Title'
-  
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- script: 
+ # Authenticate with Azure DevOps (using PAT)
+   $pat = "xdcarlp4j6ln2tnhvxneo4f3l7e4xv7eps3rkzgov7j2twtdeuxa"
+   $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$($pat)")
+   $organization = "afiqdes"
+   $project = "QC%20and%20Design"
+   $queryId = "6bb8e42f-40fe-456e-ac0d-9044b4cc79bb"
+   $url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId?api-version=6.0"
+   $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
+    foreach ($workItem in $response.workItems) 
+    {
+        Write-Output $workItem.fields.'System.Title'
+    }
