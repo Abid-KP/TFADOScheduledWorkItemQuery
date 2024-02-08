@@ -29,6 +29,10 @@ steps:
       $queryId = "418f043f-32fd-46c1-80c0-c3cb2cabc432"
       $url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId"
       $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic $base64AuthInfo")}
+      $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{
+      Authorization = "Basic $base64AuthInfo"
+      } -Verbose
+
       foreach ($workItem in $response.workItems) 
       {
           Write-Output $workItem.fields.'System.Title'
