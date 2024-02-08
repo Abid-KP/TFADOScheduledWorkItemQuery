@@ -22,8 +22,7 @@ steps:
 
 
 - script: |
-    sudo apt-get update
-    sudo apt-get install -y mailutils  # Install mailutils package
+
     current_time=$(date)  # Get current date and time
     echo "Current time is $current_time"  # Print current time
     echo "Sending email..."
