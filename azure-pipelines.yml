@@ -4,37 +4,36 @@
 # https://aka.ms/yaml
 
 
+trigger:
+- none
+
 schedules:
-- cron: "10 19 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
-  displayName: Daily 7:00 PM build 
+- cron: "0 0 * * *"  # Run daily at midnight UTC
+  displayName: Daily midnight
   branches:
-   include:
-     - master
-     - main
-  
-pool:
-  vmImage: ubuntu-latest
+    include:
+    - main
 
-steps:
+pr: none
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Authenticate with Azure DevOps (using PAT)
-      $pat = "y3mfou4yaudgj2bvguedcfqezg4dz6sgrqt4xrkhclsrgsjceusq"
-      $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$pat"))
-      $organization = "afiqdes"
-      $project = "QC%20and%20Design"
-      $queryId = "418f043f-32fd-46c1-80c0-c3cb2cabc432"
-      $url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId"
-      $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization = "Basic $base64AuthInfo"} -Verbose
-
-      foreach ($workItem in $response.workItems) 
-      {
-          Write-Output $workItem.fields.'System.Title'
-      }
-  displayName: 'Fetch Work Items'
-
-
-  
+jobs:
+- job: Send_WorkItem_Query_Email
+  displayName: Send Work Item Query Email
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - task: QueryWorkItems@2
+    inputs:
+      queryOption: 'directValue'
+      queryValue: 'SELECT [System.Id], [System.Title], [System.State], [System.AssignedTo], [System.Tags], [System.WorkItemType] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] IN GROUP 'Feature', 'User Story', 'Task' AND [System.State] <> 'Closed' AND [System.CreatedDate] > @Today-1'
+      project: 'YourProjectName'
+      connectedServiceName: 'YourServiceConnectionName'  # The name of your service connection
+  - task: SendEmail@1
+    inputs:
+      to: 'recipient@example.com'
+      subject: 'Work Item Query Results'
+      body: |
+        Here are the work items that match your query:
+        
+        $(QueryWorkItems.result)
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'Schedule'))
