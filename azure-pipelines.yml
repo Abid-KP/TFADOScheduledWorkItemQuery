@@ -6,7 +6,7 @@
 
 schedules:
 - cron: "03 19 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
-  displayName: Daily 7:30 PM build 
+  displayName: Daily 7:00 PM build 
   branches:
    include:
      - master
