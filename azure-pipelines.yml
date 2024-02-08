@@ -35,7 +35,7 @@ steps:
       $queryId = "cbbc27e4-0916-4282-b8ef-25fe78a232bb"
 
       # Construct the REST API URL for querying work items
-      $url = "https://dev.azure.com/afiqdes/QC%20and%20Design/_queries?tempQueryId=cbbc27e4-0916-4282-b8ef-25fe78a232bb"
+      $url = "$organizationUrl/_apis/wit/queries/$queryId?api-version=7.1"
 
       # Invoke the REST API to execute the query
       $workItemsResponse = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic {0}" -f [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$($pat)")))}
