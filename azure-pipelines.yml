@@ -16,22 +16,23 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world! zainul abid
-  displayName: 'Run a one-line script'
 
-- script: |
-    # Authenticate with Azure DevOps (using PAT)
-    $pat = "y3mfou4yaudgj2bvguedcfqezg4dz6sgrqt4xrkhclsrgsjceusq"
-    $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$pat"))
-    $organization = "afiqdes"
-    $project = "QC and Design"
-    $queryId = "418f043f-32fd-46c1-80c0-c3cb2cabc432"
-    $url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId"
-    $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic $base64AuthInfo")}
-    foreach ($workItem in $response.workItems) 
-    {
-        Write-Output $workItem.fields.'System.Title'
-    }
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Authenticate with Azure DevOps (using PAT)
+      $pat = "y3mfou4yaudgj2bvguedcfqezg4dz6sgrqt4xrkhclsrgsjceusq"
+      $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$pat"))
+      $organization = "afiqdes"
+      $project = "QC and Design"
+      $queryId = "418f043f-32fd-46c1-80c0-c3cb2cabc432"
+      $url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId"
+      $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic $base64AuthInfo")}
+      foreach ($workItem in $response.workItems) 
+      {
+          Write-Output $workItem.fields.'System.Title'
+      }
   displayName: 'Fetch Work Items'
 
 
