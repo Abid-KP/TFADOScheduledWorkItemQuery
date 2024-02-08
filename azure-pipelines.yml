@@ -5,7 +5,7 @@
 
 
 schedules:
-- cron: "07 11 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
+- cron: "39 11 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
   displayName: Daily 7:30 PM build 
   branches:
    include:
@@ -22,8 +22,6 @@ steps:
     versionSpec: '3.x'
     addToPath: true
 
-- script: pip install azure-devops
-  displayName: 'Install Azure DevOps Python SDK'
 
 - script: |
     python -c "from azure.devops.connection import Connection
@@ -31,7 +29,7 @@ steps:
     import pprint
 
     # Fill in with your personal access token and organization URL
-    personal_access_token = '7xk2eylerm2fjteobnzsp6xn3musu7cwiku2wfrozjb2xbfx43sa'
+    personal_access_token = 'pircqfxw7y6f2mpr2dm6lnkq6bapbwydw2cecwryoxf4ulub3pha'
     organization_url = 'https://dev.azure.com/afiqdes'
 
     # Create a connection to the Azure DevOps organization
