@@ -24,8 +24,8 @@ steps:
 
 - script: |
     pip install azure-devops
-    pip install azure-devops~=7.1.0  # Ensure you're using a compatible version
   displayName: 'Install Azure DevOps Python SDK'
+  
 - script: |
     python -c "from azure.devops.connection import Connection
     from msrest.authentication import BasicAuthentication
