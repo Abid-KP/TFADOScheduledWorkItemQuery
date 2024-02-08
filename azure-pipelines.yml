@@ -5,13 +5,8 @@
 
 
 schedules:
-- cron: "39 11 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
+- cron: "43 19 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
   displayName: Daily 7:30 PM build 
-  branches:
-   include:
-     - master
-     - main
-
   
 pool:
   vmImage: ubuntu-latest
@@ -20,17 +15,34 @@ steps:
 - script: echo Hello, world! zainul abid
   displayName: 'Run a one-line script'
 
-
 - script: |
-
-    sudo apt-get update
-    sudo apt-get install -y sendmail  # Install sendmail package
-    current_time=$(date)  # Get current date and time
-    echo "Current time is $current_time"  # Print current time
-    echo "Sending email..."
-    echo "Subject: Current Time" | sudo sendmail -t recipient@example.com  # Set email subject
-    echo "Current time is $current_time" | sudo sendmail -t qd.aibot@gmail.com  # Send email with current time
-    echo "Email sent."
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'  # Display name for the step
+  displayName: 'Run a multi-line script'
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define your Azure DevOps organization URL and personal access token (PAT)
+      $organizationUrl = "https://dev.azure.com/afiqdes"
+      $pat = "7xk2eylerm2fjteobnzsp6xn3musu7cwiku2wfrozjb2xbfx43sa"
+
+      # Define the query ID of your shared work item query
+      $queryId = "cbbc27e4-0916-4282-b8ef-25fe78a232bb"
+
+      # Construct the REST API URL for querying work items
+      $url = "$organizationUrl/_apis/wit/wiql/$queryId?api-version=6.0"
+
+      # Invoke the REST API to execute the query
+      $workItemsResponse = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic {0}" -f [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$($pat)")))}
+      
+      # Extract work item details from the response
+      $workItems = $workItemsResponse.workItems | Select-Object -ExpandProperty id
+
+      # Output the IDs of the work items returned by the query
+      Write-Output "Work Items Returned by the Query:"
+      $workItems | ForEach-Object {
+          Write-Output $_
+      }
+  displayName: 'Query Shared Work Items'
