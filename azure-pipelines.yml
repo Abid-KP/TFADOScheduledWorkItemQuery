@@ -29,7 +29,7 @@ steps:
     script: |
       # Define your Azure DevOps organization URL and personal access token (PAT)
       $organizationUrl = "https://dev.azure.com/afiqdes"
-      $pat = "pircqfxw7y6f2mpr2dm6lnkq6bapbwydw2cecwryoxf4ulub3pha"
+      $pat = "wnd6wsomjr65dtvsi5imsdn6p7squdstgffpf2xno4bf7sdjl5wa"
 
       # Define the query ID of your shared work item query
       $queryId = "cbbc27e4-0916-4282-b8ef-25fe78a232bb"
