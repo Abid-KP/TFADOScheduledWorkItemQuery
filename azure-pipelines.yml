@@ -27,10 +27,10 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      $organizationUrl = "https://dev.azure.com/afiqdes"
+      $organizationUrl = "https://dev.azure.com/afiqdes/"
       $project = "QC%20and%20Design"
       $queryId = "418f043f-32fd-46c1-80c0-c3cb2cabc432"
-      $url = "$organizationUrl/$project/_apis/wit/wiql/$queryId?api-version=6.0"
+      $url = "$organizationUrl$project/_apis/wit/wiql/$queryId?api-version=6.0"
       az boards query --id $queryId --output table
 
   
