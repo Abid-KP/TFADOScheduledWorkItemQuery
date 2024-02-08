@@ -21,7 +21,11 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    echo "Current time is $(date)"  # Print current time
+    current_time=$(date)  # Get current date and time
+    echo "Current time is $current_time"  # Print current time
+    echo "Sending email..."
+    echo "Current time is $current_time" | mailx -s "Current Time" qd.aibot@gmail.com  # Send email with current time
+    echo "Email sent."
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script abid'
+  displayName: 'Run a multi-line script'  # Display name for the step
