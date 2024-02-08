@@ -5,12 +5,13 @@
 
 
 schedules:
-- cron: "43 19 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
-  displayName: Daily 6:30 PM build 
+- cron: "16 09 * * *"  # This cron expression triggers the pipeline at 7:30 PM every day
+  displayName: Daily 7:30 PM build 
   branches:
-    include:
-    - '*'
-
+   include:
+     - master
+     - main
+  
 pool:
   vmImage: ubuntu-latest
 
@@ -19,18 +20,19 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    # Authenticate with Azure DevOps (using PAT)
+    $pat = "y3mfou4yaudgj2bvguedcfqezg4dz6sgrqt4xrkhclsrgsjceusq"
+    $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$pat"))
+    $organization = "afiqdes"
+    $project = "QC and Design"
+    $queryId = "418f043f-32fd-46c1-80c0-c3cb2cabc432"
+    $url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId"
+    $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic $base64AuthInfo")}
+    foreach ($workItem in $response.workItems) 
+    {
+        Write-Output $workItem.fields.'System.Title'
+    }
+  displayName: 'Fetch Work Items'
 
-- task: PowerShell@2
-  inputs:
-    targetType: 'inline'
-    script: |
-      $organizationUrl = "https://dev.azure.com/afiqdes/"
-      $project = "QC%20and%20Design"
-      $queryId = "418f043f-32fd-46c1-80c0-c3cb2cabc432"
-      $url = "$organizationUrl$project/_apis/wit/wiql/$queryId?api-version=6.0"
-      az boards query --id $queryId --output table
 
   
