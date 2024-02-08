@@ -25,13 +25,10 @@ steps:
       $pat = "y3mfou4yaudgj2bvguedcfqezg4dz6sgrqt4xrkhclsrgsjceusq"
       $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$pat"))
       $organization = "afiqdes"
-      $project = "QC and Design"
+      $project = "QC%20and%20Design"
       $queryId = "418f043f-32fd-46c1-80c0-c3cb2cabc432"
       $url = "https://dev.azure.com/$organization/$project/_apis/wit/wiql/$queryId"
-      $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic $base64AuthInfo")}
-      $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{
-      Authorization = "Basic $base64AuthInfo"
-      } -Verbose
+      $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization = "Basic $base64AuthInfo"} -Verbose
 
       foreach ($workItem in $response.workItems) 
       {
