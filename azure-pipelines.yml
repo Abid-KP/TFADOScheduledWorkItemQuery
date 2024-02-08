@@ -19,16 +19,7 @@ steps:
 - script: echo Hello, world! zainul abid
   displayName: 'Run a one-line script'
 
-- script: 
- # Authenticate with Azure DevOps (using PAT)
-   $pat = "xdcarlp4j6ln2tnhvxneo4f3l7e4xv7eps3rkzgov7j2twtdeuxa"
-   $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(":$($pat)")
-   $organization = "afiqdes"
-   $project = "QC and Design"
-   $queryId = "6bb8e42f-40fe-456e-ac0d-9044b4cc79bb"
-   $url = "https://dev.azure.com/afiqdes/QC%20and%20Design/_queries/query/6bb8e42f-40fe-456e-ac0d-9044b4cc79bb/"
-   $response = Invoke-RestMethod -Uri $url -Method Get -Headers @{Authorization=("Basic {0}" -f $base64AuthInfo)}
-    foreach ($workItem in $response.workItems) 
-    {
-        Write-Output $workItem.fields.'System.Title'
-    }
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
