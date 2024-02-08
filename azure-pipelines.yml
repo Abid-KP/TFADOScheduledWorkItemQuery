@@ -16,10 +16,29 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world! zainul abid
-  displayName: 'Run a one-line script'
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+    addToPath: true
+
+- script: pip install azure-devops
+  displayName: 'Install Azure DevOps Python SDK'
 
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    python -c "from azure.devops.connection import Connection
+    from msrest.authentication import BasicAuthentication
+    import pprint
+
+    # Fill in with your personal access token and organization URL
+    personal_access_token = 'xdcarlp4j6ln2tnhvxneo4f3l7e4xv7eps3rkzgov7j2twtdeuxa'
+    organization_url = 'https://dev.azure.com/afiqdes'
+
+    # Create a connection to the Azure DevOps organization
+    credentials = BasicAuthentication('', personal_access_token)
+    connection = Connection(base_url=organization_url, creds=credentials)
+
+    # Execute your query
+    core_client = connection.clients.get_core_client()
+    projects = core_client.get_projects()
+    pprint.pprint([project.name for project in projects])"
+  displayName: 'Execute Azure DevOps Query'
