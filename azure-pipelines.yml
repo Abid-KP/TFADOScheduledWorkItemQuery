@@ -11,11 +11,7 @@ schedules:
    include:
      - master
      - main
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.x'
-    addToPath: true
-    architecture: 'x64'
+
   
 pool:
   vmImage: ubuntu-latest
